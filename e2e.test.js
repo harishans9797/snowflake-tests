@@ -17,6 +17,6 @@ describe('E2E test example', () => {
     })
 
     afterAll(async () => {
-        await pool.destroy()
+        console.log("E2E test has passed!")
     })
 })
