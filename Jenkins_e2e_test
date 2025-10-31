@@ -24,8 +24,29 @@ pipeline {
 
         stage('Run Test') {
             steps {
-                sh 'npm test e2e.test.js'
+                sh 'npm run test:ci e2e.test.js'
             }
         }
     }
+    post {
+    always {
+      archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
+    }
+    success {
+      allure([
+        includeProperties: true,
+        jdk: '',
+        reportBuildPolicy: 'ALWAYS',
+        results: [[path: 'allure-results']]
+      ])
+    }
+    unsuccessful {
+      allure([
+        includeProperties: true,
+        jdk: '',
+        reportBuildPolicy: 'ALWAYS',
+        results: [[path: 'allure-results']]
+      ])
+    }
+  }
 }
